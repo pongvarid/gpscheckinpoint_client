@@ -7,6 +7,7 @@ let success = (r)=>{ return r.data};
 let error = (e)=>{ return r.response};
 const state = { 
     USER:{},
+    PROFILE:{}
 };
 const getters = {};
 
@@ -55,6 +56,16 @@ const actions = {
         }).catch((e) => { 
             return false;
          });
+         
+         return request;
+    },  async getAllProfile(context,id){
+        let request = await axios.get(`/api/profilefull/${id}/`)
+        .then((r) => {
+            return r.data;
+        }).catch((e) => { 
+            return false;
+         });
+         state.PROFILE = request
          return request;
     },
     async storeProfile(context,form){
