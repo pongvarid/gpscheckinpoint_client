@@ -78,11 +78,15 @@ const actions = {
          return request;
     },
     async logout(context,form){
-        await window.localStorage.removeItem('access_token');
+        let getLogout = confirm("คุณแน่ใจใช่ไหมที่จะออกจากระบบ");
+        if(getLogout){
+            await window.localStorage.removeItem('access_token');
         await window.localStorage.clear();
         let check = await axios.post(`${authUrl}/logout/`).then((r)=>{return true}).catch((e)=>{ return false}); 
         await window.location.replace('/#/');
         await location.reload();
+        }
+        
     }
 };
 
