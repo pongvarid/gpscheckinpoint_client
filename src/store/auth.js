@@ -84,7 +84,9 @@ const actions = {
         await window.localStorage.clear();
         let check = await axios.post(`${authUrl}/logout/`).then((r)=>{return true}).catch((e)=>{ return false}); 
         await window.location.replace('/#/');
-        await location.reload();
+        location.href = "https://login.windows.net/common/oauth2/logout?post_logout_redirect_uri=https://pongvarid.github.io/upcheckin/"
+
+      //  await location.reload();
         }
         
     }

@@ -10,9 +10,10 @@ const env = {
     PROFILE_365 : 'https://graph.microsoft.com/beta/me?$select=givenName,surname,department,id,officeLocation,mail,displayName',
     CLIENT_ID : up.CLIENT_ID,
     AUTH_URL:`https://login.microsoftonline.com/${up.TENANT_ID}/oauth2/authorize`,
-    AUTH_CALLBACK:'http://171.5.48.222',
+    AUTH_CALLBACK:'https://www.lemperor.xyz',
     SCOPE:up.SCOPE ,
-    baseURL:"http://171.5.48.222"
+    baseURL:"https://www.lemperor.xyz"
  };
+
 
  module.exports = env ;
