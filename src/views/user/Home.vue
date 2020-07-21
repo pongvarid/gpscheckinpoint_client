@@ -24,7 +24,7 @@
                 </div>
             </div>
         </v-card>
-        <v-card @click="checkIn()" class="mt-4 coin-bg">
+        <v-card @click="$router.push('/point')" class="mt-4 coin-bg">
             <div class="d-flex flex-no-wrap ">
                 <v-avatar class="ma-3" size="125" tile>
                     <v-icon class="w3-jumbo w3-text-white">mdi-bitcoin</v-icon>
@@ -36,7 +36,11 @@
             </div>
         </v-card>
     </v-layout>
-
+    <v-snackbar color="orange" v-model="snackbar" :timeout="3000">
+        <h2 class="w3-large">
+            <v-icon>mdi-bitcoin</v-icon><b> + ได้แต้มสะสม</b>
+        </h2>
+    </v-snackbar>
     <!-- <v-btn @click="checkIn()" color="success">CheckIn</v-btn>
     <v-btn @click="logout()" color="success">logout</v-btn> -->
     <!-- <pre>{{USER}}</pre>
@@ -46,7 +50,7 @@
             <v-card-title class="check-bg w3-text-white">
                 <h2 class="w3-large "><b>สุขภาพของคุณ</b></h2>
                 <v-spacer></v-spacer>
-                <v-btn dark icon flat @click="close()">
+                <v-btn dark icon text @click="close()">
                     <v-icon>mdi-close-circle</v-icon>
                 </v-btn>
             </v-card-title>
@@ -86,7 +90,7 @@
             <v-card-title class="check-bg w3-text-white">
                 <h2 class="w3-large"><b>อาการเป็นอย่างไรบ้าง</b></h2>
                 <v-spacer></v-spacer>
-                <v-btn dark icon flat @click="close()">
+                <v-btn dark icon text @click="close()">
                     <v-icon>mdi-close-circle</v-icon>
                 </v-btn>
             </v-card-title>
@@ -113,7 +117,7 @@
             <v-card-title class="check-bg w3-text-white">
                 <h2 class="w3-xlarge"><b>ที่อยู่ปัจจุบัน</b></h2>
                 <v-spacer></v-spacer>
-                <v-btn dark icon flat @click="close()">
+                <v-btn dark icon text @click="close()">
                     <v-icon>mdi-close-circle</v-icon>
                 </v-btn>
             </v-card-title>
@@ -142,6 +146,9 @@
 
 <script>
 import axios from 'axios';
+import moment, {
+    version
+} from 'moment';
 import {
     call,
     sync
@@ -178,6 +185,7 @@ export default {
                 sick6: 0,
                 sick7: 0,
             },
+            snackbar: false,
 
         };
     },
@@ -199,7 +207,8 @@ export default {
             }
         },
         ...sync('auth/*'),
-        ...sync('thai/*')
+        ...sync('thai/*'),
+        ...sync('point/*'),
     },
     watch: {
 
@@ -208,6 +217,7 @@ export default {
     methods: {
         ...call('auth/*'),
         ...call('thai/*'),
+        ...call('point/*'),
         async close() {
             this.form = {
                 sick1: 0,
@@ -281,23 +291,92 @@ export default {
                 this.form.province = myLocation.province
                 this.form.district = myLocation.id
                 let checkin = await this.checkinMyLocation(this.form);
+                await this.generatePoint();
+
                 if (checkin != false) {
                     this.dialog = false;
                     Swal.fire({
-                        icon:"success",
+                        icon: "success",
                         title: 'สำเร็จ',
                         text: 'เช็คอินที่อยู่ปัจจุบันของคุณแล้ว',
                         showConfirmButton: false,
                         timer: 3000,
                     })
+                    await this.load();
                 }
             }
 
+        },
+        async generatePoint() {
+            let current = (this.POINTS) ? this.POINTS[0] : {
+                updated_at: null
+            };
+            console.log(current);
+            if (current.updated_at) {
+                var given = moment(current.updated_at, "YYYY-MM-DD");
+                var today = moment().startOf('day');
+                var sum = moment.duration(given.diff(today)).asDays();
+                console.log(sum)
+                if (sum == -1) {
+                    if (current.points == 0) {
+                        console.log('step 1');
+                        if (current.points == 0) {
+                            current.points = 0.25
+                            await this.updatePoint(current);
+                        }
+                    } else if (current.points2 == 0) {
+                        console.log('step 2');
+                        if (current.points2 == 0) {
+                            current.points2 = 0.25
+                            await this.updatePoint(current);
+                        }
+                    } else if (current.points3 == 0) {
+                        console.log('step 3');
+                        if (current.points3 == 0) {
+                            current.points3 = 0.25
+                            await this.updatePoint(current);
+                        }
+                    } else if (current.points4 == 0) {
+                        console.log('step 4');
+                        if (current.points4 == 0) {
+                            current.points4 = 0.5
+                            await this.updatePoint(current);
+                        }
+                    } else if (current.points5 == 0) {
+                        console.log('step 5');
+                        if (current.points5 == 0) {
+                            current.points5 = 0.5
+                            await this.updatePoint(current);
+                        }
+                    } else if (current.points6 == 0) {
+                        console.log('step 6');
+                        if (current.points6 == 0) {
+                            current.points6 = 1.0
+                            await this.updatePoint(current);
+                        }
+                    } else if (current.points7 == 0) {
+                        console.log('step 7');
+                        if (current.points7 == 0) {
+                            current.points7 = 1.0
+                            await this.updatePoint(current);
+                        }
+                    } else {
+                        await this.storePoint(this.USER.id);
+                    }
+                    this.snackbar = true;
+                    console.log(current);
+                }
+            } else {
+                this.snackbar = true;
+                await this.storePoint(this.USER.id);
+            }
         },
         /******* Methods default run ******/
         load: async function () {
             await this.$store.dispatch('auth/getProfile')
             await this.$store.dispatch('auth/getAllProfile', this.USER.id)
+            await this.$store.dispatch('point/getPointUser', this.USER.id)
+
         }
     },
 }

@@ -4,15 +4,16 @@ const up = {
     SCOPE:["User.Read","profile"],
     //CFE61x9G~VUV3.-n_Spr-oYZ-0XG7Gp1pZ
 }
+const backend = "http://localhost:8000"
 const env = {
     API:'/api/v1',
     API_AUTH:'/auth',
     PROFILE_365 : 'https://graph.microsoft.com/beta/me?$select=givenName,surname,department,id,officeLocation,mail,displayName',
     CLIENT_ID : up.CLIENT_ID,
     AUTH_URL:`https://login.microsoftonline.com/${up.TENANT_ID}/oauth2/authorize`,
-    AUTH_CALLBACK:'https://www.lemperor.xyz',
+    AUTH_CALLBACK:backend,
     SCOPE:up.SCOPE ,
-    baseURL:"https://www.lemperor.xyz"
+    baseURL:backend
  };
 
 
