@@ -4,38 +4,39 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
 import * as VueGoogleMaps from 'vue2-google-maps'
+import env from './env';
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 
 Vue.config.productionTip = false
 Vue.use(VueGoogleMaps, {
   load: {
     key: 'AIzaSyC04k2TIJBXUa0yJQ0N2XimbuiVubkgG6g',
-    libraries: 'places', // This is required if you use the Autocomplete plugin
-    // OR: libraries: 'places,drawing'
-    // OR: libraries: 'places,drawing,visualization'
-    // (as you require)
- 
-    //// If you want to set the version, you can do so:
-    // v: '3.26',
-  },
- 
-  //// If you intend to programmatically custom event listener code
-  //// (e.g. `this.$refs.gmap.$on('zoom_changed', someFunc)`)
-  //// instead of going through Vue templates (e.g. `<GmapMap @zoom_changed="someFunc">`)
-  //// you might need to turn this on.
-  // autobindAllEvents: false,
- 
-  //// If you want to manually install components, e.g.
-  //// import {GmapMarker} from 'vue2-google-maps/src/components/marker'
-  //// Vue.component('GmapMarker', GmapMarker)
-  //// then disable the following:
-  // installComponents: true,
+    libraries: 'places',  
+  }, 
 })
 import VueBarcodeScanner from 'vue-barcode-scanner'
 Vue.use(VueBarcodeScanner)
 
 import VueThailandAddress from 'vue-thailand-address';
 Vue.use(VueThailandAddress);
-//import 'vue-thailand-address/dist/vue-thailand-address.css';
+
+Vue.use(VueAxios, axios) 
+import VueAuthenticate from 'vue-authenticate'
+Vue.use(VueAuthenticate, {
+  baseUrl: env.AUTH_CALLBACK,  
+  tokenPath: 'id',
+   providers: {
+     live: { 
+       clientId: env.CLIENT_ID,
+       authorizationEndpoint : env.AUTH_URL,
+       scope: env.SCOPE,
+       scopeDelimiter: ' ',
+       oauthType: '2.0',
+     }
+   }
+ })  
+
 new Vue({
   router,
   store,

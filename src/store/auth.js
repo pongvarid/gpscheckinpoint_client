@@ -1,0 +1,84 @@
+import _ from "lodash";
+import { make, context, dispatch, registerModule } from "vuex-pathify"; 
+import axios from "@/plugins/axios";
+import env from '../env';
+const authUrl = "/api/auth";
+let success = (r)=>{ return r.data};
+let error = (e)=>{ return r.response};
+const state = { 
+    USER:{},
+};
+const getters = {};
+
+const mutations = make.mutations(state);
+
+const actions = {
+    async login(context,form){ 
+        let user = await axios.post(`${authUrl}/login/`,form)
+        .then((r)=>{
+            return r.data;
+        })
+        .catch((e)=>{
+            return e.response.data;
+        });
+        await actions.storeToken(context,user.token);
+        return user; 
+    },
+    async register(context,form){
+        let request = await axios.post(`${authUrl}/register/`,form)
+        .then((r) => {
+            return r.data;
+        }).catch((e) => { 
+            return false;
+         });
+         return request;
+    },
+    async storeToken(context,token){
+        console.log(token);
+       await localStorage.setItem('access_token',token); 
+       await location.reload();
+    }, 
+    async getProfile(context,form){
+        let request = await axios.get(`${authUrl}/profile/`)
+        .then((r) => {
+            return r.data;
+        }).catch((e) => { 
+            return null
+         });
+         state.USER = request
+         return request
+    },
+    async getFullProfile(context,id){
+        let request = await axios.get(`/api/profile/${id}/`)
+        .then((r) => {
+            return r.data;
+        }).catch((e) => { 
+            return false;
+         });
+         return request;
+    },
+    async storeProfile(context,form){
+        let request = await axios.post(`/api/profile/`,form)
+        .then((r) => {
+            return r.data;
+        }).catch((e) => { 
+            return false;
+         });
+         return request;
+    },
+    async logout(context,form){
+        await window.localStorage.removeItem('access_token');
+        await window.localStorage.clear();
+        let check = await axios.post(`${authUrl}/logout/`).then((r)=>{return true}).catch((e)=>{ return false}); 
+        await window.location.replace('/#/');
+        await location.reload();
+    }
+};
+
+export default {
+    namespaced: true,
+    state,
+    getters,
+    mutations,
+    actions
+};

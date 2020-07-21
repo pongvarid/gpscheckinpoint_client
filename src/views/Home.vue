@@ -7,66 +7,49 @@
 
     <pre>{{location}}</pre>
     <h4>{{data}}</h4>
-  
- <div id="qr-code-full-region"></div>
-    <GmapMap
-  :center="{lat:location.lat, lng:location.lng}"
-  :zoom="18"
-  map-type-id="terrain"
-  style="width: 500px; height: 300px"
->
- 
-    <GmapMarker ref="myMarker"
-    :position="map" />
-</GmapMap>
 
-<v-dialog
-    v-model="dialog"
-    scrollable   
-    persistent :overlay="false"
-    max-width="500px"
-    transition="dialog-transition"
->
-<v-card>
-     <v-card-title class="headline">แสกนบาร์โค้ด</v-card-title>
-        <v-card-text>
- <StreamBarcodeReader
-    @decode="onDecode"
-    @loaded="onLoaded"
-></StreamBarcodeReader>
-<ImageBarcodeReader
-    @decode="onDecode"
-    @error="onError"
-></ImageBarcodeReader>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="dialog = false">close</v-btn> 
-        </v-card-actions>
- 
- 
-</v-card>
-    
-</v-dialog>
+    <div id="qr-code-full-region"></div>
+    <GmapMap :center="{lat:location.lat, lng:location.lng}" :zoom="18" map-type-id="terrain" style="width: 500px; height: 300px">
 
+        <GmapMarker ref="myMarker" :position="map" />
+    </GmapMap>
+
+    <v-dialog v-model="dialog" scrollable persistent :overlay="false" max-width="500px" transition="dialog-transition">
+        <v-card>
+            <v-card-title class="headline">แสกนบาร์โค้ด</v-card-title>
+            <v-card-text>
+                <StreamBarcodeReader @decode="onDecode" @loaded="onLoaded"></StreamBarcodeReader>
+                <ImageBarcodeReader @decode="onDecode" @error="onError"></ImageBarcodeReader>
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="green darken-1" text @click="dialog = false">close</v-btn>
+            </v-card-actions>
+
+        </v-card>
+
+    </v-dialog>
 
 </div>
-</template> 
- 
+</template>
 
 <script>
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue'
 import axios from 'axios';
-import { StreamBarcodeReader , ImageBarcodeReader } from "vue-barcode-reader";
-    import VueQrReader from 'vue-qr-reader/dist/lib/vue-qr-reader.umd.js';
-
-
+import {
+    StreamBarcodeReader,
+    ImageBarcodeReader
+} from "vue-barcode-reader";
+import VueQrReader from 'vue-qr-reader/dist/lib/vue-qr-reader.umd.js';
 
 export default {
     name: 'Home',
     components: {
-        HelloWorld,StreamBarcodeReader,VueQrReader,ImageBarcodeReader
+        HelloWorld,
+        StreamBarcodeReader,
+        VueQrReader,
+        ImageBarcodeReader
     },
     data: function () {
         return {
@@ -76,17 +59,20 @@ export default {
                 lng: 0
             },
             data: '',
-            dialog:false,
+            dialog: false,
         }
     },
-    computed:{
-        map(){
-            return {"lat":this.location.lat, "lng":this.location.lng}
+    computed: {
+        map() {
+            return {
+                "lat": this.location.lat,
+                "lng": this.location.lng
+            }
         }
     },
     methods: {
-        async barcodeScan(){
-           this.dialog = true;
+        async barcodeScan() {
+            this.dialog = true;
         },
         async getLocation() {
             if (navigator.geolocation) {
@@ -119,7 +105,7 @@ export default {
             this.data = data;
         },
         async getAddressGoogle() {
-            var api_url = `https://maps.googleapis.com/maps/api/geocode/json?region=th&latlng=${this.location.lat},${this.location.lng}&key=AIzaSyC04k2TIJBXUa0yJQ0N2XimbuiVubkgG6g`; 
+            var api_url = `https://maps.googleapis.com/maps/api/geocode/json?region=th&latlng=${this.location.lat},${this.location.lng}&key=AIzaSyC04k2TIJBXUa0yJQ0N2XimbuiVubkgG6g`;
             let data = await axios.get(api_url)
                 .then(
                     (r) => {
@@ -128,16 +114,16 @@ export default {
                 )
                 .catch()
             console.log(data);
-             this.data = data;
+            this.data = data;
         },
-        onDecode(result){
+        onDecode(result) {
             alert(result)
             this.dialog = false;
         },
-        onLoaded(){
+        onLoaded() {
 
         },
-        onError(){
+        onError() {
 
         }
 
