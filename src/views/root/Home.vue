@@ -18,7 +18,7 @@
                 </center>
         </div>
         <div class="w3-display-bottomleft w3-padding-large">
-            Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">University of phayao</a>
+            Powered by <a href="https://www.up.ac.th/" target="_blank">University of phayao</a>
         </div>
     </div>
 
