@@ -23,7 +23,33 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<!-- The core Firebase JS SDK is always required and must be listed first --> 
+<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
 
+<!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-analytics.js"></script>
+
+<!-- Add Firebase products that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-firestore.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyC04k2TIJBXUa0yJQ0N2XimbuiVubkgG6g",
+    authDomain: "learn-84c01.firebaseapp.com",
+    databaseURL: "https://learn-84c01.firebaseio.com",
+    projectId: "learn-84c01",
+    storageBucket: "learn-84c01.appspot.com",
+    messagingSenderId: "18400144378",
+    appId: "1:18400144378:web:90ab8a2f1a9a64edbd5243"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
 </head>
 
 <body>

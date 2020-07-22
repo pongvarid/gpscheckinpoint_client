@@ -272,9 +272,10 @@ export default {
         }, // {"province": "พะเยา", "dist": "แม่กา"}
         async prepareCheckin() {
             let data = this.onMap.address_components;
-            let dist = (data[1].long_name).split('ตำบล');
+            let dist = (data[1].long_name).split('ตำบล'); 
             dist = dist[1]
-            let province = data[3].long_name
+            dist = dist.replace(" ", "")
+            let province = data[3].long_name 
             let sending = {
                 "province": province,
                 "dist": dist

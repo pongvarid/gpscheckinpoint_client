@@ -28,6 +28,7 @@ Vue.use(VueAuthenticate, {
   tokenPath: 'id',
    providers: {
      live: { 
+      popupOptions: null,
        clientId: env.CLIENT_ID,
        authorizationEndpoint : env.AUTH_URL,
        scope: env.SCOPE,

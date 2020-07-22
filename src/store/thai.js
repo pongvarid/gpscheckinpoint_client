@@ -67,7 +67,9 @@ const actions = {
       .then((r) => {
          console.log(r.data);
          return r.data;
-      }).catch((e) => { 
+      }).catch((e) => {
+        
+         alert( JSON.stringify(e.response));
          return false;
        });
        return request;
