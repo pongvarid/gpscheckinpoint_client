@@ -281,27 +281,31 @@ export default {
             console.log(this.onMap);
             let data = this.onMap.address_components;
             let sending = {};
-            let myLocation  = {};
+            let myLocation = {};
             if (data) {
                 let dist = (data[1].long_name).split('ตำบล');
-                dist = dist[1]
-                dist = dist.replace(" ", "")
-                let province = data[3].long_name
-                sending = {
-                    "province": province,
-                    "dist": dist
+                console.log(dist.length);
+                if (dist.length > 1) {
+                    dist = dist[1]
+                    dist = dist.replace(" ", "")
+                    let province = data[3].long_name
+                    sending = {
+                        "province": province,
+                        "dist": dist
+                    }
+                    console.log(sending)
+                    myLocation = await this.getMyLocation(sending);
                 }
-                console.log(sending)
-                myLocation = await this.getMyLocation(sending);
+
             }
 
             this.form.latitude = this.location.lat
             this.form.longitude = this.location.lng
             this.form.user = this.USER.id
-            this.form.geo = (myLocation.geo)?myLocation.geo:null
-            this.form.amphur = (myLocation.amphur)?myLocation.amphur.id:null
-            this.form.province = (myLocation.province)?myLocation.province:null
-            this.form.district = (myLocation.id)?myLocation.id:null
+            this.form.geo = (myLocation.geo) ? myLocation.geo : null
+            this.form.amphur = (myLocation.amphur) ? myLocation.amphur.id : null
+            this.form.province = (myLocation.province) ? myLocation.province : null
+            this.form.district = (myLocation.id) ? myLocation.id : null
             let checkin = await this.checkinMyLocation(this.form);
             await this.generatePoint();
 

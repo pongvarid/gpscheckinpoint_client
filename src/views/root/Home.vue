@@ -33,7 +33,7 @@
         </div>
 
     </v-layout> -->
-    <v-dialog v-model="loading" persistent width="300">
+    <v-dialog v-model="loading" hide-overlay persistent width="300">
         <v-card color="check-bg" dark>
             <v-card-text>
                 <h3 class="w3-large pt-4">กำลังโหลด</h3>
@@ -46,7 +46,7 @@
             <v-card-title class="check-bg w3-text-white">
                 <h2 class="w3-large"><b>ข้อมูลส่วนตัว</b></h2>
                 <v-spacer></v-spacer>
-                <v-btn dark icon flat>
+                <v-btn dark icon text>
                     <v-icon>mdi-close-circle</v-icon>
                 </v-btn>
             </v-card-title>
@@ -209,9 +209,38 @@ export default {
             this.loading = type;
         },
         /******* Methods default run ******/
-        load: async function (user) {
-            // await this.loadProfile();
+        load: async function () {
+            
+            let firebaseAuth = await this.loadFirebase(); 
+            if (firebaseAuth != false) {
+                let thisLogin = await this.loadLogin(firebaseAuth);
+            }else{
+                try {
+                        await this.loadProfile();
+                } catch (error) {
+                    
+                }
+            
+            }
+
+        },
+
+        async loadFirebase() {
+            await this.onLoad(true);
+            let user = firebase.auth().getRedirectResult()
+                .then(async (result) => {
+                    await this.onLoad(false);
+                    return result.additionalUserInfo.profile;
+                })
+                .catch(async (error) => {
+                    await this.onLoad(false);
+                    return false;
+                });
+            return user;
+        },
+        async loadLogin(form) {
             let users = await this.$store.dispatch('auth/getProfile')
+            console.log(form);
             if (users) {
                 let profile = await this.$store.dispatch('auth/getFullProfile', this.USER.id);
                 if (!profile) {
@@ -220,34 +249,22 @@ export default {
                     await this.$router.replace('/checkin/')
                 }
             } else {
-                await this.onLoad(true); 
-                firebase.auth().getRedirectResult()
-                    .then(async (result) => {
-                        if (result.additionalUserInfo.profile) {
-                            console.log(result.additionalUserInfo.profile);
-                            let user = result.additionalUserInfo.profile
-                            let register = await this.register(user);
-                            if (register) {
-                                console.log(register);
-                                await this.login(r.data)
-                            } else {
-                              
-                                await this.$store.dispatch('auth/login', {
-                                    "login": user.id,
-                                    "password": `USER${btoa(user.id)}`
-                                })
-                            }
-
-                        }
-                        await this.onLoad(false);
+                await this.onLoad(true);
+                let register = await this.register(form);
+                if (register) {
+                    console.log(register);
+                     await this.$store.dispatch('auth/login', {
+                        "login": form.id,
+                        "password": `USER${btoa(form.id)}`
                     })
-                    .catch(async (error) => {
-                        await this.onLoad(false);
-                    });
-            }
-
-            await this.loadProfile();
-            console.log(this.USER)
+                } else {
+                    await this.$store.dispatch('auth/login', {
+                        "login": form.id,
+                        "password": `USER${btoa(form.id)}`
+                    })
+                }
+                await this.onLoad(false);
+            } 
         },
         async loadProfile() {
             await this.$store.dispatch('auth/getProfile')

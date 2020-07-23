@@ -15,6 +15,7 @@ const mutations = make.mutations(state);
 
 const actions = {
     async login(context,form){ 
+        delete axios.defaults.headers.common["Authorization"];
         await window.localStorage.removeItem('access_token');
        await window.localStorage.clear();
         let user = await axios.post(`${authUrl}/login/`,form)
@@ -22,22 +23,28 @@ const actions = {
             return r.data;
         })
         .catch((e)=>{
-            return e.response.data;
+            return false;
         });
-        await actions.storeToken(context,user.token);
+        if(user){
+            await actions.storeToken(context,user.token);
+        }
+       
         return user; 
     },
     async register(context,form){
+        delete axios.defaults.headers.common["Authorization"];
         let request = await axios.post(`${authUrl}/register/`,form)
         .then((r) => {
             return r.data;
         }).catch((e) => { 
             return false;
          });
+         
          return request;
     },
     async storeToken(context,token){
         console.log(token);
+        axios.defaults.headers.common["Authorization"] = `Token ${token}`
        await localStorage.setItem('access_token',token); 
        await location.reload();
     }, 
