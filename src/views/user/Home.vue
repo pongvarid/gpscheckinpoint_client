@@ -249,8 +249,15 @@ export default {
             let data = await axios.get(api_url)
                 .then(
                     (r) => {
-                        this.onMap = r.data.results[0];
-                        return r.data.results[0].formatted_address;
+
+                        if (r.data.results.length > 0) {
+                            this.onMap = r.data.results[0];
+                            return r.data.results[0].formatted_address;
+                        } else {
+                            this.onMap = r.data.results
+                            return '';
+                        }
+
                     }
                 )
                 .catch()
@@ -271,40 +278,43 @@ export default {
             }
         }, // {"province": "พะเยา", "dist": "แม่กา"}
         async prepareCheckin() {
+            console.log(this.onMap);
             let data = this.onMap.address_components;
-            let dist = (data[1].long_name).split('ตำบล'); 
-            dist = dist[1]
-            dist = dist.replace(" ", "")
-            let province = data[3].long_name 
-            let sending = {
-                "province": province,
-                "dist": dist
-            }
-            console.log(sending)
-            let myLocation = await this.getMyLocation(sending);
-            if (myLocation != false) {
-
-                this.form.latitude = this.location.lat
-                this.form.longitude = this.location.lng
-                this.form.user = this.USER.id
-                this.form.geo = myLocation.geo
-                this.form.amphur = myLocation.amphur.id
-                this.form.province = myLocation.province
-                this.form.district = myLocation.id
-                let checkin = await this.checkinMyLocation(this.form);
-                await this.generatePoint();
-
-                if (checkin != false) {
-                    this.dialog = false;
-                    Swal.fire({
-                        icon: "success",
-                        title: 'สำเร็จ',
-                        text: 'เช็คอินที่อยู่ปัจจุบันของคุณแล้ว',
-                        showConfirmButton: false,
-                        timer: 3000,
-                    })
-                    await this.load();
+            let sending = {};
+            let myLocation  = {};
+            if (data) {
+                let dist = (data[1].long_name).split('ตำบล');
+                dist = dist[1]
+                dist = dist.replace(" ", "")
+                let province = data[3].long_name
+                sending = {
+                    "province": province,
+                    "dist": dist
                 }
+                console.log(sending)
+                myLocation = await this.getMyLocation(sending);
+            }
+
+            this.form.latitude = this.location.lat
+            this.form.longitude = this.location.lng
+            this.form.user = this.USER.id
+            this.form.geo = (myLocation.geo)?myLocation.geo:null
+            this.form.amphur = (myLocation.amphur)?myLocation.amphur.id:null
+            this.form.province = (myLocation.province)?myLocation.province:null
+            this.form.district = (myLocation.id)?myLocation.id:null
+            let checkin = await this.checkinMyLocation(this.form);
+            await this.generatePoint();
+
+            if (checkin != false) {
+                this.dialog = false;
+                Swal.fire({
+                    icon: "success",
+                    title: 'สำเร็จ',
+                    text: 'เช็คอินที่อยู่ปัจจุบันของคุณแล้ว',
+                    showConfirmButton: false,
+                    timer: 3000,
+                })
+                await this.load();
             }
 
         },

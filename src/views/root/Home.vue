@@ -212,10 +212,8 @@ export default {
         load: async function (user) {
             await this.onLoad(true);
             firebase.auth().getRedirectResult()
-                .then(async (result) => {
-
+                .then(async (result) => { 
                     if (result.additionalUserInfo.profile) {
-
                         console.log(result.additionalUserInfo.profile);
                         let user = result.additionalUserInfo.profile
                         let register = await this.register(user);
@@ -223,10 +221,14 @@ export default {
                             console.log(register);
                             await this.login(r.data)
                         } else {
+                            await window.localStorage.removeItem('access_token');
+                            await window.localStorage.clear();
                             await this.$store.dispatch('auth/login', {
                                 "login": user.id,
                                 "password": `USER${btoa(user.id)}`
                             })
+                            await this.$store.dispatch('auth/getProfile')
+
                         }
 
                     }
@@ -235,8 +237,7 @@ export default {
                 .catch(async (error) => {
                     await this.onLoad(false);
                 });
-
-            await this.$store.dispatch('auth/getProfile')
+                 await this.$store.dispatch('auth/getProfile')
             if (this.USER.id) {
                 let profile = await this.$store.dispatch('auth/getFullProfile', this.USER.id);
                 if (!profile) {
@@ -245,7 +246,6 @@ export default {
                     await this.$router.replace('/checkin/')
                 }
             }
-
             console.log(this.USER)
         }
     },

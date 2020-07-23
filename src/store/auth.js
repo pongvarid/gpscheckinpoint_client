@@ -15,6 +15,7 @@ const mutations = make.mutations(state);
 
 const actions = {
     async login(context,form){ 
+      
         let user = await axios.post(`${authUrl}/login/`,form)
         .then((r)=>{
             return r.data;
@@ -78,8 +79,8 @@ const actions = {
          return request;
     },
     async logout(context,form){
-        let getLogout = confirm("คุณแน่ใจใช่ไหมที่จะออกจากระบบ");
-        if(getLogout){
+        // let getLogout = confirm("คุณแน่ใจใช่ไหมที่จะออกจากระบบ");
+        // if(getLogout){
             await window.localStorage.removeItem('access_token');
         await window.localStorage.clear();
         let check = await axios.post(`${authUrl}/logout/`).then((r)=>{return true}).catch((e)=>{ return false}); 
@@ -87,7 +88,7 @@ const actions = {
         location.href = "https://login.windows.net/common/oauth2/logout?post_logout_redirect_uri=https://pongvarid.github.io/upcheckin/"
 
       //  await location.reload();
-        }
+       // }
         
     }
 };
