@@ -210,34 +210,47 @@ export default {
         },
         /******* Methods default run ******/
         load: async function (user) {
-            await this.onLoad(true);
-            firebase.auth().getRedirectResult()
-                .then(async (result) => { 
-                    if (result.additionalUserInfo.profile) {
-                        console.log(result.additionalUserInfo.profile);
-                        let user = result.additionalUserInfo.profile
-                        let register = await this.register(user);
-                        if (register) {
-                            console.log(register);
-                            await this.login(r.data)
-                        } else {
-                            await window.localStorage.removeItem('access_token');
-                            await window.localStorage.clear();
-                            await this.$store.dispatch('auth/login', {
-                                "login": user.id,
-                                "password": `USER${btoa(user.id)}`
-                            })
-                            await this.$store.dispatch('auth/getProfile')
+            // await this.loadProfile();
+            let users = await this.$store.dispatch('auth/getProfile')
+            if (users) {
+                let profile = await this.$store.dispatch('auth/getFullProfile', this.USER.id);
+                if (!profile) {
+                    this.dialog = true;
+                } else {
+                    await this.$router.replace('/checkin/')
+                }
+            } else {
+                await this.onLoad(true); 
+                firebase.auth().getRedirectResult()
+                    .then(async (result) => {
+                        if (result.additionalUserInfo.profile) {
+                            console.log(result.additionalUserInfo.profile);
+                            let user = result.additionalUserInfo.profile
+                            let register = await this.register(user);
+                            if (register) {
+                                console.log(register);
+                                await this.login(r.data)
+                            } else {
+                              
+                                await this.$store.dispatch('auth/login', {
+                                    "login": user.id,
+                                    "password": `USER${btoa(user.id)}`
+                                })
+                            }
 
                         }
+                        await this.onLoad(false);
+                    })
+                    .catch(async (error) => {
+                        await this.onLoad(false);
+                    });
+            }
 
-                    }
-                    await this.onLoad(false);
-                })
-                .catch(async (error) => {
-                    await this.onLoad(false);
-                });
-                 await this.$store.dispatch('auth/getProfile')
+            await this.loadProfile();
+            console.log(this.USER)
+        },
+        async loadProfile() {
+            await this.$store.dispatch('auth/getProfile')
             if (this.USER.id) {
                 let profile = await this.$store.dispatch('auth/getFullProfile', this.USER.id);
                 if (!profile) {
@@ -246,8 +259,7 @@ export default {
                     await this.$router.replace('/checkin/')
                 }
             }
-            console.log(this.USER)
-        }
+        },
     },
 }
 </script>

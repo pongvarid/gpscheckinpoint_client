@@ -96,7 +96,7 @@
             </v-card-title>
 
             <v-card-text class="pt-4">
-                <v-checkbox v-model="form.sick1" false-value="0" true-value="1" label="มีไข้ 35.5c ขึ้นไป"></v-checkbox>
+                <v-checkbox v-model="form.sick1" false-value="0" true-value="1" label="มีไข้ 37.5 องศา ขึ้นไป"></v-checkbox>
                 <v-checkbox v-model="form.sick2" false-value="0" true-value="1" label="ไอ"></v-checkbox>
                 <v-checkbox v-model="form.sick3" false-value="0" true-value="1" label="มีน้ำมูก"></v-checkbox>
                 <v-checkbox v-model="form.sick4" false-value="0" true-value="1" label="เจ็บคอ"></v-checkbox>

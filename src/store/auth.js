@@ -15,7 +15,8 @@ const mutations = make.mutations(state);
 
 const actions = {
     async login(context,form){ 
-      
+        await window.localStorage.removeItem('access_token');
+       await window.localStorage.clear();
         let user = await axios.post(`${authUrl}/login/`,form)
         .then((r)=>{
             return r.data;
