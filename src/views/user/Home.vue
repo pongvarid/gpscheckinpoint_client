@@ -7,7 +7,7 @@
             <h3 class="w3-text-white w3-large">{{USER.email}}</h3>
             <v-btn dark @click="logout()" color="pink accent-4">ออกจากระบบ</v-btn>
         </div>
-       
+
     </header>
     <v-layout column wrap class="pa-4">
 
@@ -269,12 +269,32 @@ export default {
                     this.location.lat = r.coords.latitude;
                     this.location.lng = r.coords.longitude
                     await this.getAddressGoogle();
-                });
+                },this.showError);
 
             } else {
                 alert("กรุณา เปิด GPS");
             }
-        }, // {"province": "พะเยา", "dist": "แม่กา"}
+        },
+
+        showError(error) {
+            let text = "";
+            switch (error.code) { 
+                case error.PERMISSION_DENIED:
+                   text =  "User denied the request for Geolocation."
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                   text =  "Location information is unavailable."
+                    break;
+                case error.TIMEOUT:
+                   text =  "The request to get user location timed out."
+                    break;
+                case error.UNKNOWN_ERROR:
+                   text =  "An unknown error occurred."
+                    break;
+            }
+            alert(text);
+        },
+        // {"province": "พะเยา", "dist": "แม่กา"}
         async prepareCheckin() {
             console.log(this.onMap);
             let data = this.onMap.address_components;
