@@ -7,9 +7,7 @@
             <h3 class="w3-text-white w3-large">{{USER.email}}</h3>
             <v-btn dark @click="logout()" color="pink accent-4">ออกจากระบบ</v-btn>
         </div>
-        <!-- <div class="w3-display-bottomright w3-center w3-padding-large">
-            <span class="w3-text-white">15 Adr street, 5015</span>
-        </div> -->
+       
     </header>
     <v-layout column wrap class="pa-4">
 
@@ -274,7 +272,7 @@ export default {
                 });
 
             } else {
-
+                alert("กรุณา เปิด GPS");
             }
         }, // {"province": "พะเยา", "dist": "แม่กา"}
         async prepareCheckin() {
@@ -388,6 +386,7 @@ export default {
         },
         /******* Methods default run ******/
         load: async function () {
+            await this.getLocation();
             await this.$store.dispatch('auth/getProfile')
             await this.$store.dispatch('auth/getAllProfile', this.USER.id)
             await this.$store.dispatch('point/getPointUser', this.USER.id)
