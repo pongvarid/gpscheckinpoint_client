@@ -277,22 +277,26 @@ export default {
         },
 
         showError(error) {
-            let text = "";
+            let text = ""; 
             switch (error.code) { 
-                case error.PERMISSION_DENIED:
-                   text =  "User denied the request for Geolocation."
+                case error.PERMISSION_DENIED: 
+                   text =  "ผู้ใช้ปฏิเสธคำขอการเข้าถึงตำแหน่ง กรุณาตรวจสอบ GPS ในโทรศัพของคุณให้ถูกต้อง"
                     break;
                 case error.POSITION_UNAVAILABLE:
-                   text =  "Location information is unavailable."
+                   text =  "ไม่มีข้อมูลตำแหน่ง กรุณาตรวจสอบ GPS ในโทรศัพของคุณให้ถูกต้อง"
                     break;
                 case error.TIMEOUT:
-                   text =  "The request to get user location timed out."
+                   text =  "คำขอรับตำแหน่งผู้ใช้หมดเวลา"
                     break;
                 case error.UNKNOWN_ERROR:
-                   text =  "An unknown error occurred."
+                   text =  "เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ กรุณาตรวจสอบ GPS ในโทรศัพของคุณให้ถูกต้อง"
                     break;
             }
-            alert(text);
+             Swal.fire({
+                    icon: "error",
+                    title: 'ยืนยันตัวตนไม่ได้',
+                    text: text
+                }) 
         },
         // {"province": "พะเยา", "dist": "แม่กา"}
         async prepareCheckin() {
@@ -408,6 +412,9 @@ export default {
         load: async function () {
             await this.getLocation();
             await this.$store.dispatch('auth/getProfile')
+            if(!this.USER.id){
+                await this.$router.replace('/')
+            }
             await this.$store.dispatch('auth/getAllProfile', this.USER.id)
             await this.$store.dispatch('point/getPointUser', this.USER.id)
 
