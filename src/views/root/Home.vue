@@ -60,7 +60,12 @@
 
                     <v-text-field outlined required v-model="form.post" label="รหัสไปรษณีย์"></v-text-field>
                     <v-text-field outlined required v-model="form.tel" label="เบอร์โทร"></v-text-field>
-                    <v-text-field outlined required v-model="form.address2" label="หอพัก"></v-text-field>
+                    <v-text-field outlined required v-model="form.address2" label="หอพัก"></v-text-field><br>
+                        <v-divider 
+                        ></v-divider>
+                    <h2 class="w3-xlarge"><b>ในช่วยระยะเวลา 14 วันที่ผ่านมา ท่านมีประวัติความเสี่ยงเหล่านี้หรือไม่</b></h2>
+                        <v-divider 
+                        ></v-divider>
                     <v-radio-group required v-model="form.question1">
                         <h3 class="pa-3">เคยไปสถานที่เสี่ยง มีคนแออัด เบียดเสียดหรือไม่</h3>
                         <v-radio label="ใช่" value="1"></v-radio>

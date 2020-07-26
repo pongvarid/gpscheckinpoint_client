@@ -2,8 +2,8 @@ module.exports = {
     "transpileDependencies": [
         "vuetify"
     ],
-    // publicPath: process.env.NODE_ENV === 'production'
-    // ? '/upcheckin/'
-    // : '/'
+    publicPath: process.env.NODE_ENV === 'production' ?
+        '/static/' :
+        '/'
 
 }

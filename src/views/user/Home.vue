@@ -10,7 +10,7 @@
                 <v-btn dark @click="logout()" color="pink accent-4">ออกจากระบบ</v-btn>
                 <v-btn @click="reload()" color="purple" dark>
                     <v-icon>mdi mdi-refresh</v-icon>
-                </v-btn> 
+                </v-btn>
 
             </v-layout>
             <!-- <v-btn dark @click="logout()" color="pink accent-4">ออกจากระบบ</v-btn> -->
@@ -225,6 +225,13 @@ export default {
         ...call('auth/*'),
         ...call('thai/*'),
         ...call('point/*'),
+        async openDialog() {
+            if (this.location.lat > 0 && this.location.lng > 0) {
+                this.dialog = true;
+            } else {
+                alert('hello');
+            }
+        },
         async reload() {
             location.reload();
         },
@@ -251,8 +258,16 @@ export default {
             }
         },
         async checkIn() {
-            await this.getLocation();
-            this.dialog = true;
+            if (this.location.lat > 0 && this.location.lng > 0) {
+                await this.getLocation();
+                this.dialog = true;
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: 'อ่านค่า GPS จากเครื่องไม่ได้',
+                    text: 'กรุณาตรวจสอบ GPS ในโทรศัพของคุณให้ถูกต้อง',
+                })
+            }
         },
         async getAddressGoogle() {
             var api_url = `https://maps.googleapis.com/maps/api/geocode/json?region=th&latlng=${this.location.lat},${this.location.lng}&key=AIzaSyC04k2TIJBXUa0yJQ0N2XimbuiVubkgG6g`;
@@ -285,7 +300,11 @@ export default {
                 }, this.showError);
 
             } else {
-                alert("กรุณา เปิด GPS");
+                Swal.fire({
+                    icon: "error",
+                    title: 'อ่านค่า GPS จากเครื่องไม่ได้',
+                    text: 'กรุณาตรวจสอบ GPS ในโทรศัพของคุณให้ถูกต้อง',
+                })
             }
 
         },
@@ -436,10 +455,10 @@ export default {
         /******* Methods default run ******/
         load: async function () {
             await this.getLocation();
-           let user =  await this.$store.dispatch('auth/getProfile') 
-           if(!user){ 
-               location.replace('/');
-           }
+            let user = await this.$store.dispatch('auth/getProfile')
+            if (!user) {
+                location.replace('/');
+            }
             await this.$store.dispatch('auth/getAllProfile', this.USER.id)
             await this.$store.dispatch('point/getPointUser', this.USER.id)
 

@@ -5,8 +5,8 @@
     <v-btn @click="getAddressGoogle()" color="success">GetAddress Google</v-btn>
     <v-btn @click="barcodeScan"> Scan Barcode</v-btn>
 
-    <pre>{{location}}</pre>
-    <h4>{{data}}</h4>
+    <!-- <pre>{{location}}</pre>
+    <h4>{{data}}</h4> -->
 
     <div id="qr-code-full-region"></div>
     <GmapMap :center="{lat:location.lat, lng:location.lng}" :zoom="18" map-type-id="terrain" style="width: 500px; height: 300px">
@@ -30,7 +30,7 @@
 
     </v-dialog>
 
-</div>
+</div>  
 </template>
 
 <script>
@@ -73,6 +73,13 @@ export default {
     methods: {
         async barcodeScan() {
             this.dialog = true;
+        },
+        async openDialog(){
+            if(this.location.lat >0 && this.location.lng >0){
+                this.dialog = true;
+            }else{
+                alert('hello');
+            }
         },
         async getLocation() {
             if (navigator.geolocation) {
