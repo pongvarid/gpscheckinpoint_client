@@ -5,7 +5,15 @@
             <img style="height:100px;" src="https://image.flaticon.com/icons/png/512/149/149071.png" alt="">
             <h2 class="w3-text-white w3-xlarge">{{USER.first_name}} {{USER.last_name}}</h2>
             <h3 class="w3-text-white w3-large">{{USER.email}}</h3>
-            <v-btn dark @click="logout()" color="pink accent-4">ออกจากระบบ</v-btn>
+
+            <v-layout row wrap>
+                <v-btn dark @click="logout()" color="pink accent-4">ออกจากระบบ</v-btn>
+                <v-btn @click="reload()" color="purple" dark>
+                    <v-icon>mdi mdi-refresh</v-icon>
+                </v-btn> 
+
+            </v-layout>
+            <!-- <v-btn dark @click="logout()" color="pink accent-4">ออกจากระบบ</v-btn> -->
         </div>
 
     </header>
@@ -164,6 +172,7 @@ export default {
     /*-------------------------ประกาศตัวแปรที่ใช้ ผูกกับ v-model ---------------------------------------*/
     data() {
         return {
+            checkinBtn: true,
             dialog: false,
             txt: 'Hello World',
             count: 0,
@@ -216,6 +225,9 @@ export default {
         ...call('auth/*'),
         ...call('thai/*'),
         ...call('point/*'),
+        async reload() {
+            location.reload();
+        },
         async close() {
             this.form = {
                 sick1: 0,
@@ -268,35 +280,48 @@ export default {
                     console.log(r);
                     this.location.lat = r.coords.latitude;
                     this.location.lng = r.coords.longitude
+                    await this.checkLatLng();
                     await this.getAddressGoogle();
-                },this.showError);
+                }, this.showError);
 
             } else {
                 alert("กรุณา เปิด GPS");
             }
+
+        },
+        async checkLatLng() {
+
+            if (this.location.lat <= 0 && this.location.lng <= 0) {
+                this.checkinBtn = false;
+                Swal.fire({
+                    icon: "error",
+                    title: 'อ่านค่า GPS จากเครื่องไม่ได้',
+                    text: 'กรุณาตรวจสอบ GPS ในโทรศัพของคุณให้ถูกต้อง',
+                })
+            }
         },
 
         showError(error) {
-            let text = ""; 
-            switch (error.code) { 
-                case error.PERMISSION_DENIED: 
-                   text =  "ผู้ใช้ปฏิเสธคำขอการเข้าถึงตำแหน่ง กรุณาตรวจสอบ GPS ในโทรศัพของคุณให้ถูกต้อง"
+            let text = "";
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    text = "ผู้ใช้ปฏิเสธคำขอการเข้าถึงตำแหน่ง กรุณาตรวจสอบ GPS ในโทรศัพของคุณให้ถูกต้อง"
                     break;
                 case error.POSITION_UNAVAILABLE:
-                   text =  "ไม่มีข้อมูลตำแหน่ง กรุณาตรวจสอบ GPS ในโทรศัพของคุณให้ถูกต้อง"
+                    text = "ไม่มีข้อมูลตำแหน่ง กรุณาตรวจสอบ GPS ในโทรศัพของคุณให้ถูกต้อง"
                     break;
                 case error.TIMEOUT:
-                   text =  "คำขอรับตำแหน่งผู้ใช้หมดเวลา"
+                    text = "คำขอรับตำแหน่งผู้ใช้หมดเวลา"
                     break;
                 case error.UNKNOWN_ERROR:
-                   text =  "เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ กรุณาตรวจสอบ GPS ในโทรศัพของคุณให้ถูกต้อง"
+                    text = "เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ กรุณาตรวจสอบ GPS ในโทรศัพของคุณให้ถูกต้อง"
                     break;
             }
-             Swal.fire({
-                    icon: "error",
-                    title: 'ยืนยันตัวตนไม่ได้',
-                    text: text
-                }) 
+            Swal.fire({
+                icon: "error",
+                title: 'ยืนยันตัวตนไม่ได้',
+                text: text
+            })
         },
         // {"province": "พะเยา", "dist": "แม่กา"}
         async prepareCheckin() {
@@ -411,10 +436,10 @@ export default {
         /******* Methods default run ******/
         load: async function () {
             await this.getLocation();
-            await this.$store.dispatch('auth/getProfile')
-            if(!this.USER.id){
-                await this.$router.replace('/')
-            }
+           let user =  await this.$store.dispatch('auth/getProfile') 
+           if(!user){ 
+               location.replace('/');
+           }
             await this.$store.dispatch('auth/getAllProfile', this.USER.id)
             await this.$store.dispatch('point/getPointUser', this.USER.id)
 
