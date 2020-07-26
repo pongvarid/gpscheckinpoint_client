@@ -94,7 +94,7 @@ const actions = {
         await window.localStorage.clear();
         let check = await axios.post(`${authUrl}/logout/`).then((r) => { return true }).catch((e) => { return false });
         await window.location.replace('/#/');
-        location.href = "https://login.windows.net/common/oauth2/logout?post_logout_redirect_uri=https://dorm.dsq.up.ac.th/"
+        location.href = "https://login.windows.net/common/oauth2/logout?post_logout_redirect_uri=https://dorm.dsq.up.ac.th/checkin/"
 
         //  await location.reload();
         // }

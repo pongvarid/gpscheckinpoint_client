@@ -6,9 +6,9 @@
             <h2 class="w3-text-white w3-xlarge">{{USER.first_name}} {{USER.last_name}}</h2>
             <h3 class="w3-text-white w3-large">{{USER.email}}</h3>
 
-            <v-layout row wrap>
+            <v-layout row wrap justify-center>
                 <v-btn dark @click="logout()" color="pink accent-4">ออกจากระบบ</v-btn>
-                <v-btn @click="reload()" color="purple" dark>
+                <v-btn class="ml-2" @click="reload()" color="purple" dark>
                     <v-icon>mdi mdi-refresh</v-icon>
                 </v-btn>
 
@@ -264,8 +264,8 @@ export default {
             } else {
                 Swal.fire({
                     icon: "error",
-                    title: 'อ่านค่า GPS จากเครื่องไม่ได้',
-                    text: 'กรุณาตรวจสอบ GPS ในโทรศัพของคุณให้ถูกต้อง',
+                    title: 'ไม่สามารถตรวจสอบตำแหน่ง ของคุณได้',
+                    text: 'กรุณาตรวจสอบ GPS ในโทรศัพท์ของคุณ จากนั้น กดปุ่ม รีเซ็ตสีม่วง ที่เมนู',
                 })
             }
         },
@@ -302,8 +302,8 @@ export default {
             } else {
                 Swal.fire({
                     icon: "error",
-                    title: 'อ่านค่า GPS จากเครื่องไม่ได้',
-                    text: 'กรุณาตรวจสอบ GPS ในโทรศัพของคุณให้ถูกต้อง',
+                    title: 'ไม่สามารถตรวจสอบตำแหน่ง ของคุณได้',
+                    text: 'กรุณาตรวจสอบ GPS ในโทรศัพท์ของคุณ จากนั้น กดปุ่ม รีเซ็ตสีม่วง ที่เมนู',
                 })
             }
 
@@ -314,8 +314,8 @@ export default {
                 this.checkinBtn = false;
                 Swal.fire({
                     icon: "error",
-                    title: 'อ่านค่า GPS จากเครื่องไม่ได้',
-                    text: 'กรุณาตรวจสอบ GPS ในโทรศัพของคุณให้ถูกต้อง',
+                    title: 'ไม่สามารถตรวจสอบตำแหน่ง ของคุณได้',
+                    text: 'กรุณาตรวจสอบ GPS ในโทรศัพท์ของคุณ จากนั้น กดปุ่ม รีเซ็ตสีม่วง ที่เมนู',
                 })
             }
         },
