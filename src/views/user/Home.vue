@@ -47,10 +47,15 @@
             <v-icon>mdi-bitcoin</v-icon><b> + ได้แต้มสะสม</b>
         </h2>
     </v-snackbar>
-    <!-- <v-btn @click="checkIn()" color="success">CheckIn</v-btn>
-    <v-btn @click="logout()" color="success">logout</v-btn> -->
-    <!-- <pre>{{USER}}</pre>
-    <pre>{{PROFILE}}</pre> -->
+    <v-dialog v-model="loading" hide-overlay persistent width="300">
+        <v-card color="check-bg" dark>
+            <v-card-text>
+                <h3 class="w3-large pt-4">กำลังค้นหาตำแหน่งของคุณ..</h3>
+                <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
+            </v-card-text>
+        </v-card>
+    </v-dialog>
+
     <v-dialog v-model="dialog" scrollable persistent :overlay="false" max-width="500px" transition="dialog-transition">
         <v-card v-if="step == 1">
             <v-card-title class="check-bg w3-text-white">
@@ -172,6 +177,7 @@ export default {
     /*-------------------------ประกาศตัวแปรที่ใช้ ผูกกับ v-model ---------------------------------------*/
     data() {
         return {
+            loading:false,
             checkinBtn: true,
             dialog: false,
             txt: 'Hello World',
@@ -258,8 +264,12 @@ export default {
             }
         },
         async checkIn() {
+            this.loading = true;
+            await this.getLocation();
+            await this.sleep(4000);
+             this.loading = false;
             if (this.location.lat > 0 && this.location.lng > 0) {
-                await this.getLocation();
+                //await this.getLocation();
                 this.dialog = true;
             } else {
                 Swal.fire({
@@ -454,14 +464,7 @@ export default {
         },
         /******* Methods default run ******/
         load: async function () {
-            await this.getLocation();
-            navigator.geolocation.getCurrentPosition(async (r) => {
-            //    
-                this.location.lat = r.coords.latitude;
-                this.location.lng = r.coords.longitude
-                // await this.checkLatLng();
-                // await this.getAddressGoogle();
-            });
+            // await this.getLocation(); 
             let user = await this.$store.dispatch('auth/getProfile')
             if (!user) {
                 location.replace('/');
@@ -469,7 +472,11 @@ export default {
             await this.$store.dispatch('auth/getAllProfile', this.USER.id)
             await this.$store.dispatch('point/getPointUser', this.USER.id)
 
+        },
+        async sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
         }
+
     },
 }
 </script>
