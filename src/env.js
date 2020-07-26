@@ -4,7 +4,7 @@ const up = {
     SCOPE: ["User.Read", "profile"],
     //CFE61x9G~VUV3.-n_Spr-oYZ-0XG7Gp1pZ
 }
-const backend = "http://localhost:8000" //"https://www.lemperor.xyz"
+const backend = "http://10.209.10.190:8000" //"https://www.lemperor.xyz"
 const env = {
     API: '/api/v1',
     API_AUTH: '/auth',
