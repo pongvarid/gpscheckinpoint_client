@@ -455,6 +455,13 @@ export default {
         /******* Methods default run ******/
         load: async function () {
             await this.getLocation();
+            navigator.geolocation.getCurrentPosition(async (r) => {
+            //    
+                this.location.lat = r.coords.latitude;
+                this.location.lng = r.coords.longitude
+                // await this.checkLatLng();
+                // await this.getAddressGoogle();
+            });
             let user = await this.$store.dispatch('auth/getProfile')
             if (!user) {
                 location.replace('/');
