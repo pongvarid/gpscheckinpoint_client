@@ -14,12 +14,14 @@ const actions = {
         let request = await axios.get(`/api/ponituser/${id}`)
             .then((r) => {
                 let data = r.data;
-                if(data.length > 0){
+                if (data.length > 0) {
+                    console.log('Have Cueernt', data);
                     return data;
-                }else{
+                } else {
+                    console.log('not Have Cueernt', null);
                     return null
                 }
-                
+
             }).catch((e) => {
                 return null;
             });
@@ -39,16 +41,16 @@ const actions = {
     async storePoint(context, id) {
         console.log("New Checkin")
         let request = await axios.post(`/api/ponit/`, {
-            "points": 0.25,
-            "points2": 0,
-            "points3": 0,
-            "points4": 0,
-            "points5": 0,
-            "points6": 0,
-            "points7": 0,
-            "status": 1,
-            "user": id
-        })
+                "points": 0.25,
+                "points2": 0,
+                "points3": 0,
+                "points4": 0,
+                "points5": 0,
+                "points6": 0,
+                "points7": 0,
+                "status": 1,
+                "user": id
+            })
             .then((r) => {
                 return r.data;
             }).catch((e) => {

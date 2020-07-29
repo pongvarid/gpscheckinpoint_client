@@ -2,63 +2,68 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <meta name="Keywords" lang="en" content="University of Phayao, UP, Thai University, Public University, 
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="Keywords" lang="en" content="University of Phayao, UP, Thai University, Public University, 
     Comprehensive University, Higher Education, bachelor's, master's, doctoral, Ph.D., Admission, Phayao, 
     A Life of Wisdom is the Most Wondrous of All,Wisdom for Community Empowerment" />
-  <meta name="Keywords" lang="th"
-    content="มหาวิทยาลัย , มหาวิทยาลัยพะเยา , พะเยา, มพ., วิจัย, 
+    <meta name="Keywords" lang="th" content="มหาวิทยาลัย , มหาวิทยาลัยพะเยา , พะเยา, มพ., วิจัย, 
      ปริญญาตรี, ปริญญาโท,ปริญญาเอก,รับนิสิตใหม่,รับตรง, เชียงราย,สาธิต,สาธิตมหาวิทยาลัยพะเยา,มหาวิทยาลัยสวย,
     โครงการรับตรง 10%,พะเยาวิจัย,โรงเรียนสาธิตมหาวิทยาลัยพะเยา,ปัญญาเพื่อความเข้มแข็งของชุมชน,ดำรงชีวิตด้วยปัญญาประเสริฐที่สุด,มหาวิทยาลัยธรรมชาติ" />
-  <meta name="Description" content="มหาวิทยาลัยพะเยา (University of Phayao)" />
+    <meta name="Description" content="มหาวิทยาลัยพะเยา (University of Phayao)" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-  <link rel="icon" href="https://www.up.ac.th/en/img/logo_up32x.ico">
-  <title>UP Checkin</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-<!-- The core Firebase JS SDK is always required and must be listed first --> 
-<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
+    <link rel="icon" href="https://www.up.ac.th/en/img/logo_up32x.ico">
+    <title>UP Checkin</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@200&display=swap');
+        * {
+            font-family: 'Kanit', sans-serif;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
 
-<!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
-<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-analytics.js"></script>
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-analytics.js"></script>
 
-<!-- Add Firebase products that you want to use -->
-<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-firestore.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-firestore.js"></script>
 
-<!-- TODO: Add SDKs for Firebase products that you want to use
+    <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
 
-<script>
-  // Your web app's Firebase configuration
-  var firebaseConfig = {
-    apiKey: "AIzaSyC04k2TIJBXUa0yJQ0N2XimbuiVubkgG6g",
-    authDomain: "learn-84c01.firebaseapp.com",
-    databaseURL: "https://learn-84c01.firebaseio.com",
-    projectId: "learn-84c01",
-    storageBucket: "learn-84c01.appspot.com",
-    messagingSenderId: "18400144378",
-    appId: "1:18400144378:web:90ab8a2f1a9a64edbd5243"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-</script>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyC04k2TIJBXUa0yJQ0N2XimbuiVubkgG6g",
+            authDomain: "learn-84c01.firebaseapp.com",
+            databaseURL: "https://learn-84c01.firebaseio.com",
+            projectId: "learn-84c01",
+            storageBucket: "learn-84c01.appspot.com",
+            messagingSenderId: "18400144378",
+            appId: "1:18400144378:web:90ab8a2f1a9a64edbd5243"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
 </head>
 
 <body>
-  <noscript>
+    <noscript>
     <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
       Please enable it to continue.</strong>
   </noscript>
-  <div id="app"></div>
-  <!-- built files will be auto injected -->
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
 </body>
 
 </html>
