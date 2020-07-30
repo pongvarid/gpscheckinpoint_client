@@ -421,8 +421,13 @@ export default {
         },
         async generatePoint() {
             if (!this.exist) { 
-                let current = (this.POINTS.length > 0) ? this.POINTS[0] : false;
-
+                let current = false;
+                try {
+                       current = (this.POINTS.length > 0) ? this.POINTS[0] : false;
+                       console.log('Test Current',current);
+                } catch (error) {
+                     
+                } 
                 console.log('[Current]',this.POINTS);
                 if (current) {
                     var given = moment(current.updated_at, "YYYY-MM-DD");
