@@ -300,7 +300,7 @@ export default {
             }
         },
         async getAddressGoogle() {
-            var api_url = `https://maps.googleapis.com/maps/api/geocode/json?region=th&latlng=${this.location.lat},${this.location.lng}&key=AIzaSyC04k2TIJBXUa0yJQ0N2XimbuiVubkgG6g`;
+            var api_url = `https://maps.googleapis.com/maps/api/geocode/json?language=th&region=th&latlng=${this.location.lat},${this.location.lng}&key=AIzaSyC04k2TIJBXUa0yJQ0N2XimbuiVubkgG6g`;
             let data = await axios.get(api_url)
                 .then(
                     (r) => {
