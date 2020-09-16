@@ -60,7 +60,9 @@
 
                     <v-text-field outlined required v-model="form.post" label="รหัสไปรษณีย์"></v-text-field>
                     <v-text-field outlined required v-model="form.tel" label="เบอร์โทร"></v-text-field>
-                    <v-text-field outlined required v-model="form.address2" label="หอพัก"></v-text-field><br>
+                     <v-autocomplete outlined   v-model="form.address2" :items="DORM" color="white" item-text="name" item-value="name" label="หอพัก" placeholder="เลือกหอพัก"></v-autocomplete>
+
+                     <!-- <v-text-field outlined required v-model="form.address2" label="หอพักอื่นๆ"></v-text-field><br>  -->
                         <v-divider 
                         ></v-divider>
                     <h2 class="w3-xlarge"><b>ในช่วยระยะเวลา 14 วันที่ผ่านมา ท่านมีประวัติความเสี่ยงเหล่านี้หรือไม่</b></h2>
@@ -276,6 +278,7 @@ export default {
             if (this.USER.id) {
                 let profile = await this.$store.dispatch('auth/getFullProfile', this.USER.id);
                 if (!profile) {
+                    await this.getDorm()
                     this.dialog = true;
                 } else {
                     await this.$router.replace('/checkin/')

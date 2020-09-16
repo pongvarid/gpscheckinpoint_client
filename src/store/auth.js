@@ -7,13 +7,24 @@ let success = (r) => { return r.data };
 let error = (e) => { return r.response };
 const state = {
     USER: {},
-    PROFILE: {}
+    PROFILE: {},
+    DORM : [],
 };
 const getters = {};
 
 const mutations = make.mutations(state);
 
 const actions = {
+    async getDorm(context, form){
+        let request = await axios.get(`/api/dorm/dorm/`)
+            .then((r) => {
+                return r.data;
+            }).catch((e) => {
+                return null
+            });
+        state.DORM = request
+        return request
+    },
     async login(context, form) {
         delete axios.defaults.headers.common["Authorization"];
         await window.localStorage.removeItem('access_token');
@@ -83,6 +94,17 @@ const actions = {
             .then((r) => {
                 return r.data;
             }).catch((e) => {
+                return false;
+            });
+        return request;
+    },
+    async updateProfile(context, form) {
+        let request = await axios.put(`/api/profilefull/${form.id}/`, form)
+            .then((r) => {
+                alert('เปลี่ยนแปลงข้อมูลหอพักสำเร็จ');
+                return r.data;
+            }).catch((e) => {
+                alert('เกิดข้อผิดพลาดบางอย่างขึ้น');
                 return false;
             });
         return request;
