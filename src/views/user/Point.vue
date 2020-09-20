@@ -8,11 +8,10 @@
         </div>
         <img class="w3-image" src="https://www.img.in.th/images/344bbde302fa38ff86455202bbbf5f56.png" alt="Me" width="1500" height="600">
         <div class="w3-display-middle w3-padding-large w3-border w3-wide w3-text-light-grey w3-center">
-            <h1 class="w3-xxlarge">{{point}}</h1>
-            <h5 class=" " style="white-space:nowrap">UP COIN</h5>
-        </div>
-
-    </header>
+            <h1 class="w3-xxlarge">{{currentPoint}}</h1>
+        <h5 class=" " style="white-space:nowrap">UP COIN</h5>
+        </div> 
+    </header> 
     <v-stepper v-model="e6" vertical>
         <v-stepper-step :complete="current.points > 0" step="1">
             <h2 class="w3-large"><b>วันที่ 1</b></h2>
@@ -73,6 +72,8 @@ export default {
 
             txt: 'Hello World',
             point: 0.00,
+            coin: 0.00,
+            currentPoint: 0.00,
             e6: 8,
             current: {}
         };
@@ -97,6 +98,17 @@ export default {
         ...call('auth/*'),
         ...call('thai/*'),
         ...call('point/*'),
+           async generateCoin() {
+            this.currentUse = await this.getMyCoin(this.USER.id)
+            let sum = this.currentUse
+            let lastest_sum = _.sumBy(sum, function (r) {
+
+                return r.cut_coin.coin
+
+            });
+            this.coin = lastest_sum;
+            console.log('My Coin Use', this.coin);
+        },
         async generatePoint() {
             let count = 0;
             for (let index = 0; index < this.POINTS.length; index++) {
@@ -110,12 +122,14 @@ export default {
             }
             this.point = count;
             this.current = this.POINTS[0];
+            this.currentPoint = this.point - this.coin
         },
         /******* Methods default run ******/
         load: async function () {
             await this.$store.dispatch('auth/getProfile')
             await this.$store.dispatch('auth/getAllProfile', this.USER.id)
             await this.$store.dispatch('point/getPointUser', this.USER.id)
+            await this.generateCoin();
             await this.generatePoint();
             console.log();
         }

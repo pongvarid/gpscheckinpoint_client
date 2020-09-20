@@ -42,6 +42,12 @@ const routes = [{
                 component: () =>
                     import ('../views/user/History.vue')
             },
+            {
+                path: "/coin",
+                name: "coin",
+                component: () =>
+                    import ('../views/user/Coin.vue')
+            },
         ]
     }
 

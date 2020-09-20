@@ -273,6 +273,7 @@ export default {
                 await this.onLoad(false);
             } 
         },
+       
         async loadProfile() {
             await this.$store.dispatch('auth/getProfile')
             if (this.USER.id) {
