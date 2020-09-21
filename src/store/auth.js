@@ -16,7 +16,7 @@ const mutations = make.mutations(state);
 
 const actions = {
     async getDorm(context, form){
-        let request = await axios.get(`/api/dorm/dorm/`)
+        let request = await axios.get(`/api/dorm/getDormAll/`)
             .then((r) => {
                 return r.data;
             }).catch((e) => {
