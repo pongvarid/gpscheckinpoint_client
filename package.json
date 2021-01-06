@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@azure/msal-browser": "^2.0.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "html5-qrcode": "^1.1.7",
     "lodash": "^4.17.20",
