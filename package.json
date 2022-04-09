@@ -12,7 +12,7 @@
     "core-js": "^3.6.5",
     "html5-qrcode": "^1.1.7",
     "lodash": "^4.17.20",
-    "moment": "^2.27.0",
+    "moment": "^2.29.2",
     "thai-address-database": "0.0.29",
     "vue": "^2.6.11",
     "vue-authenticate": "^1.4.1",
